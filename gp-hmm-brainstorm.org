@@ -17,3 +17,7 @@
 - If there is a reasonable "simulation loss" function, are we able to
   form the expected simulation loss with a reasonable-looking
   posynomial / amount of computation?
+- More pressing issue: sum-to-1 constraint not available.  This has
+  broken earlier attempts.  Reformulations with logit don't appear
+  helpful, involving differences of logsumexps.  Never found a helpful
+  transformation.  Might check cloglog.
