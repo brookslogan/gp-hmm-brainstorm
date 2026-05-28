@@ -9,6 +9,9 @@
   - But WIS and energy score, for example, while having a term that
     resembles this, also subtract away a term involving two
     independent simulations.  Will every loss be like that?
+  - Even if every loss involves subtracting away another term, as long
+    as loss is bounded then it seems reformulable... E[l(Y,X) - c
+    El(X',X)] = EE[l(Y,X) - c l(X',X)] = EE[l(Y,X) - c l(X',X) + offset].
   - Check proper loss decomposition theorem relied upon by
     omniprediction paper; is it useful here?
 - If there is a reasonable "simulation loss" function, are we able to
