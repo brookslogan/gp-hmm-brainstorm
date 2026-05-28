@@ -1,0 +1,16 @@
+* GP HMM fitting idea
+- P(Y_{1..t}) appears to be posynomial of emission, transition, and
+  initial hidden state probabilities; see forward algorithm.
+- GP aims to minimize, and we don't want argmin_parms P(Y_{1..t} =
+  observed; parms)
+- Try argmin_parms sum_{y_{1..t}'} loss(y_{1..t}', observed)
+  p(y_{1..t}'; parms) for non-negative loss score, omitting terms where it is
+  zero.
+  - But WIS and energy score, for example, while having a term that
+    resembles this, also subtract away a term involving two
+    independent simulations.  Will every loss be like that?
+  - Check proper loss decomposition theorem relied upon by
+    omniprediction paper; is it useful here?
+- If there is a reasonable "simulation loss" function, are we able to
+  form the expected simulation loss with a reasonable-looking
+  posynomial / amount of computation?
