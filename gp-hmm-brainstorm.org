@@ -20,4 +20,44 @@
 - More pressing issue: sum-to-1 constraint not available.  This has
   broken earlier attempts.  Reformulations with logit don't appear
   helpful, involving differences of logsumexps.  Never found a helpful
-  transformation.  Might check cloglog.
+  transformation.  Might check cloglog.  Need to fix the scale here to
+  actually be on the xp scale, and actually make plots reflect
+  convexity rather than quasiconvexity, and show the problematic cases
+  for the original scale and the logit scale (e.g. in logit scale
+  where we can't factorize away the issues and get something concave).
+#+begin_src R
+  cloglog <- function(x) log(-log(1-x))
+  clogloginv <- function(x) 1 - exp(-exp(x))
+  hm <- function(m) {heatmap(m, Rowv = NA, Colv = NA, scale = "none"); readline("press enter for next")}
+  hm2 <- function(m, x, y) {
+    m %>%
+      reshape2::melt() %>% mutate(Var1 = x[Var1], Var2 = y[Var2]) %>%
+      ggplot(aes(Var1, Var2)) %>%
+      `+`(geom_point(aes(colour = value))) %>% `+`(scale_colour_viridis_c()) %>%
+      `+`(geom_contour(aes(z = value))) %>%
+      print()
+    readline("press enter for next")
+  }
+
+  x <- 1:999/1000
+  xp <- cloglog(x)
+  ## obj_xform <- identity
+  ## obj_xform <- log
+  obj_xform <- cloglog
+  sapply(xp, function(xpe) obj_xform(clogloginv(xpe) * clogloginv(xp))) %>% hm()
+  sapply(xp, function(xpe) obj_xform(clogloginv(xpe) * clogloginv(xp))) %>% hm2(x, x)
+  sapply(xp, function(xpe) obj_xform(0.5*clogloginv(xpe) + 0.5*clogloginv(xp))) %>% hm()
+  sapply(xp, function(xpe) obj_xform(0.2*clogloginv(xpe) + 0.8*clogloginv(xp))) %>% hm()
+  sapply(xp, function(xpe) obj_xform(clogloginv(xpe) * (1-clogloginv(xp)))) %>% hm()
+  sapply(xp, function(xpe) obj_xform(0.5*clogloginv(xpe) + 0.5*(1-clogloginv(xp)))) %>% hm()
+  sapply(xp, function(xpe) obj_xform(0.2*clogloginv(xpe) + 0.8*(1-clogloginv(xp)))) %>% hm()
+  sapply(xp, function(xpe) obj_xform(0.8*clogloginv(xpe) + 0.2*(1-clogloginv(xp)))) %>% hm()
+  sapply(xp, function(xpe) obj_xform(0.8*clogloginv(xpe) + 0.2*(1-clogloginv(xp)))) %>% hm2(x, x)
+  sapply(xp, function(xpe) obj_xform(0.8*clogloginv(xpe) + 0.2*(1-clogloginv(xp)))) %>% hm2(xp, xp)
+  # ^ looks bad
+
+  plot(xp, log(clogloginv(xp)))
+  plot(xp, cloglog(clogloginv(xp)))
+  plot(xp, log(1 - clogloginv(xp)))
+  plot(xp, cloglog(1 - clogloginv(xp)))
+#+end_src
