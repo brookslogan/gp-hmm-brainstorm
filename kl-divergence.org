@@ -1,0 +1,9 @@
+- kl divergence is convex on original scale: https://statproofbook.github.io/P/kl-conv.html
+- what does it look like in GP parameterization?
+- can we use this or other proper score expectations to coax GP parameterization toward sum 1?
+- can we use this or other proper score expectations on the original scale to coax a collection of marginal distributions to follow a transition?
+- or one big joint and use this to try to enforce rules on marginalizations?
+  - but if minimizers of this penalty is straight then could just use
+    linear constraint, and if not, then not convex... if another part
+    doesn't cancel out, then problem
+- or many overlapping joints and use this to try to enforce rules on marginalizations?
